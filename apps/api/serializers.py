@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from apps.users.models import User, MemberProfile
 
+from apps.library.models import Book, Category, Member, BookIssue
 
 class SignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -19,8 +20,7 @@ class SignupSerializer(serializers.ModelSerializer):
         return user
 
 
-from rest_framework import serializers
-from apps.library.models import Book, Category, Member, BookIssue
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:

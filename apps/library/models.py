@@ -1,7 +1,6 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
+
 from apps.core.models import BaseModel
 
 class Category(BaseModel):
@@ -10,8 +9,7 @@ class Category(BaseModel):
     def __str__(self):
         return self.name
 
-from django.db import models
-from apps.core.models import BaseModel
+
 from transformers import AutoTokenizer, AutoModel
 import torch
 

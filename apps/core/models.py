@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+from django.conf import settings
 
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -10,8 +11,7 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
-from django.db import models
-from django.conf import settings
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,8 @@
 from rest_framework.permissions import BasePermission
 from apps.users.models import User
 
+
+
 class IsAdmin(BasePermission):
     def has_permission(self, request, view):
         return (
@@ -15,8 +17,7 @@ class IsManagement(BasePermission):
             request.user.is_authenticated and
             request.user.role in [User.Role.ADMIN, User.Role.LIBRARIAN]
         )
-from rest_framework.permissions import BasePermission
-from apps.users.models import User
+
 
 
 class IsAdminOrLibrarian(BasePermission):

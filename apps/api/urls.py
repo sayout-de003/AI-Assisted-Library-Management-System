@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.permissions import AllowAny
 from .views import (
     SignupAPI,
     LogoutAPIView,
@@ -19,11 +20,19 @@ router.register("books", BookViewSet)
 router.register("categories", CategoryViewSet)
 router.register("members", MemberViewSet)
 
+# Custom login view with AllowAny permission
+class PublicTokenObtainPairView(TokenObtainPairView):
+    permission_classes = [AllowAny]
+
+# Custom refresh view with AllowAny permission
+class PublicTokenRefreshView(TokenRefreshView):
+    permission_classes = [AllowAny]
+
 urlpatterns = [
     # Auth
     path("auth/signup/", SignupAPI.as_view(), name="signup"),
-    path("auth/login/", TokenObtainPairView.as_view(), name="login"),
-    path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("auth/login/", PublicTokenObtainPairView.as_view(), name="login"),
+    path("auth/refresh/", PublicTokenRefreshView.as_view(), name="token_refresh"),
     path("auth/logout/", LogoutAPIView.as_view(), name="logout"),
 
     # Management

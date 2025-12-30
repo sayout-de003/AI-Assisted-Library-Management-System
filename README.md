@@ -1,563 +1,280 @@
-# Library Management System (LMS)
+
+# AI-Assisted Library Management System (LMS)
 
 A comprehensive Django REST Framework-based Library Management System with AI-powered book recommendations, role-based access control, and automated book issue/return management.
 
-## Features
+---
 
-- **User Management**: Role-based authentication (Admin, Librarian, Member)
-- **Book Management**: CRUD operations for books, categories, and members
-- **Book Issuance**: Automated book issue and return with fine calculation
-- **AI Recommendations**: ML-powered book recommendations based on member reading history
-- **Overdue Management**: Automated overdue tracking and email notifications
-- **Management Requests**: Members can request Admin/Librarian roles
-- **JWT Authentication**: Secure token-based authentication
-- **RESTful API**: Complete REST API with pagination, search, and filtering
+## 🚀 Features
 
-## Tech Stack
+- **User Management**: Role-based authentication (Admin, Librarian, Member).
+- **Book Management**: CRUD operations for books, categories, and members.
+- **Book Issuance**: Automated book issue and return with fine calculation.
+- **AI Recommendations**: ML-powered book recommendations using Sentence Transformers based on member reading history.
+- **Overdue Management**: Automated overdue tracking and email notifications.
+- **Management Requests**: Members can request Admin/Librarian roles.
+- **JWT Authentication**: Secure token-based authentication with refresh capability.
+- **RESTful API**: Complete REST API with pagination, search, and filtering.
+- **Modern Frontend**: React 19+ interface with responsive design.
 
-- **Backend**: Django 6.0
-- **API**: Django REST Framework 3.16.1
-- **Authentication**: JWT (djangorestframework-simplejwt)
+---
+
+## 🛠 Tech Stack
+
+### Backend
+- **Framework**: Django 
+- **API**: Django REST Framework 
 - **Database**: PostgreSQL
+- **Authentication**: JWT (`djangorestframework-simplejwt`)
 - **AI/ML**: Sentence Transformers, PyTorch, scikit-learn
-- **Task Queue**: Celery (optional)
 - **Email**: SMTP (Gmail)
 
-## Prerequisites
+### Frontend
+- **Framework**: React 19.2.3
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **Styling**: CSS Modules / Standard CSS
 
-- Python 3.12+
-- PostgreSQL 12+
-- pip
-- virtualenv (recommended)
+---
 
-## Installation & Setup
+## 📂 Backend Directory Structure
+
+```text
+websoft/
+├── apps/
+│   ├── ai_engine/           # AI Logic & Recommendations
+│   │   ├── models.py
+│   │   ├── recommender.py
+│   │   ├── tasks.py
+│   │   ├── views.py
+│   │   └── ...
+│   ├── api/                 # Central API Configuration
+│   │   ├── permissions.py
+│   │   ├── serializers.py
+│   │   ├── views.py
+│   │   ├── viewsets.py
+│   │   └── urls.py
+│   ├── core/                # Core Utilities & Abstract Models
+│   │   ├── models.py
+│   │   ├── pagination.py
+│   │   ├── renderers.py
+│   │   └── utils.py
+│   ├── library/             # Main Library Business Logic
+│   │   ├── models.py
+│   │   ├── serializers.py
+│   │   ├── services.py
+│   │   └── views.py
+│   └── users/               # Authentication & Role Management
+│       ├── managers.py
+│       ├── models.py
+│       ├── permissions.py
+│       ├── serializers.py
+│       └── views.py
+├── library_lms/             # Project Settings
+│   ├── settings.py
+│   └── urls.py
+├── scripts/
+│   └── seed_data.py         # Data population script
+├── tests/
+├── manage.py
+└── requirements.txt
+
+```
+
+## 📂 Frontend Directory Structure
+
+```text
+library-frontend/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   └── modals/
+│   │       └── IssueReturnModal.jsx
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   ├── pages/
+│   │   ├── Books.jsx
+│   │   ├── Categories.jsx
+│   │   ├── Login.jsx
+│   │   └── Members.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── App.js
+│   ├── App.css
+│   └── index.js
+├── package.json
+└── README.md
+
+```
+
+---
+
+## ⚙️ Prerequisites
+
+* Python 
+* Node.js & npm (for frontend)
+* PostgreSQL 
+* Virtualenv
+
+---
+
+## ⚡ Backend Setup Guide
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <https://github.com/sayout-de003/AI-Assisted-Library-Management-System>
+git clone [https://github.com/sayout-de003/AI-Assisted-Library-Management-System](https://github.com/sayout-de003/AI-Assisted-Library-Management-System)
 cd websoft
+
 ```
 
-### 2. Create Virtual Environment
+### 2. Environment Setup
 
 ```bash
 python3 -m venv webl
 source webl/bin/activate  # On Windows: webl\Scripts\activate
-```
-
-### 3. Install Dependencies
-
-```bash
 pip install -r requirements.txt
+
 ```
 
-### 4. Set Up Environment Variables
+### 3. Environment Variables
 
-Create a `.env` file in the project root directory:
+Create a `.env` file in the root directory:
 
-```bash
-# Database Configuration
+```env
 DB_NAME=library_db
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 
-# Email Configuration (for overdue notifications)
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_app_password
 DEFAULT_FROM_EMAIL=your_email@gmail.com
 
-# Django Secret Key (generate a new one for production)
 SECRET_KEY=your-secret-key-here
+
 ```
 
-**Note**: For Gmail, you'll need to use an [App Password](https://support.google.com/accounts/answer/185833) instead of your regular password.
-
-### 5. Create PostgreSQL Database
+### 4. Database Initialization
 
 ```bash
-# Connect to PostgreSQL
-psql -U postgres
+# Create Database (via psql or pgAdmin)
+psql -U postgres -c "CREATE DATABASE library_db;"
 
-# Create database
-CREATE DATABASE library_db;
-
-# Exit PostgreSQL
-\q
-```
-
-### 6. Run Migrations
-
-```bash
+# Run Migrations
 python manage.py makemigrations
 python manage.py migrate
+
 ```
 
-### 7. Create Superuser (Optional)
+### 5. Create Superuser & Seed Data
 
 ```bash
 python manage.py createsuperuser
+python scripts/seed_data.py  # Populates books, categories, and embeddings
+
 ```
 
-### 8. Seed Initial Data (Optional)
-
-```bash
-python scripts/seed_data.py
-```
-
-This will create:
-- Sample categories (Science Fiction, Fantasy, History, Technology, Mathematics)
-- Sample books with embeddings
-- Sample members
-
-### 9. Run the Development Server
+### 6. Start Backend Server
 
 ```bash
 python manage.py runserver
-```
-
-The API will be available at `http://127.0.0.1:8000/`
-
-## API Documentation
-
-Base URL: `http://127.0.0.1:8000/api/`
-
-### Authentication
-
-All endpoints (except signup and login) require JWT authentication. Include the token in the Authorization header:
 
 ```
-Authorization: Bearer <access_token>
+
+* **API Base**: `http://127.0.0.1:8000/api/`
+* **Admin Panel**: [`http://127.0.0.1:8000/admin/`](http://127.0.0.1:8000/admin/)
+
+---
+
+## 💻 Frontend Setup Guide
+
+### 1. Install Dependencies
+
+```bash
+cd library-frontend
+npm install
+
 ```
 
-### Authentication Endpoints
+### 2. Start Frontend Server
 
-#### 1. User Signup
-- **URL**: `/api/auth/signup/`
-- **Method**: `POST`
-- **Authentication**: Not required
-- **Request Body**:
-```json
-{
-  "email": "user@example.com",
-  "name": "John Doe",
-  "password": "securepassword123"
-}
-```
-- **Response**: `201 Created`
-```json
-{
-  "message": "Signup successful"
-}
+```bash
+npm start
+
 ```
 
-#### 2. User Login
-- **URL**: `/api/auth/login/`
-- **Method**: `POST`
-- **Authentication**: Not required
-- **Request Body**:
-```json
-{
-  "email": "user@example.com",
-  "password": "securepassword123"
-}
-```
-- **Response**: `200 OK`
-```json
-{
-  "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
-  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
-}
-```
+* **App URL**: [`http://localhost:3000`](https://www.google.com/search?q=http://localhost:3000)
 
-#### 3. Refresh Token
-- **URL**: `/api/auth/refresh/`
-- **Method**: `POST`
-- **Authentication**: Not required
-- **Request Body**:
-```json
-{
-  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
-}
-```
-- **Response**: `200 OK`
-```json
-{
-  "access": "eyJ0eXAiOiJKV1QiLCJhbGc..."
-}
-```
+---
 
-#### 4. User Logout
-- **URL**: `/api/auth/logout/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Request Body**:
-```json
-{
-  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGc..."
-}
-```
-- **Response**: `205 Reset Content`
-```json
-{
-  "message": "Logged out successfully"
-}
-```
+## 🔗 API to Frontend Mapping
 
-### Management Endpoints
+Below is the complete list of backend API endpoints mapped to their corresponding Frontend Pages and URLs.
 
-#### 5. Request Management Role
-- **URL**: `/api/management/request/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Permission**: Any authenticated user
-- **Request Body**:
-```json
-{
-  "requested_role": "LIBRARIAN"  // or "ADMIN"
-}
-```
-- **Response**: `201 Created`
-```json
-{
-  "message": "Management request submitted"
-}
-```
+### 🔐 Authentication
 
-#### 6. Approve Management Request
-- **URL**: `/api/management/approve/<request_id>/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Permission**: Admin only
-- **Response**: `200 OK`
-```json
-{
-  "message": "Management request approved"
-}
-```
+| Action | API Endpoint | Frontend Component | Frontend URL |
+| --- | --- | --- | --- |
+| **Login** | `POST /api/auth/login/` | `Login.jsx` | `http://localhost:3000/` |
+| **Signup** | `POST /api/auth/signup/` | `Login.jsx` | `http://localhost:3000/` |
+| **Refresh** | `POST /api/auth/refresh/` | `AuthContext.jsx` | *(Background Process)* |
 
-#### 7. Reject Management Request
-- **URL**: `/api/management/reject/<request_id>/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Permission**: Admin only
-- **Response**: `200 OK`
-```json
-{
-  "message": "Management request rejected"
-}
-```
+### 📚 Books & Library
 
-### Book Management Endpoints
+| Action | API Endpoint | Frontend Component | Frontend URL |
+| --- | --- | --- | --- |
+| **List Books** | `GET /api/books/` | `Books.jsx` | `http://localhost:3000/books` |
+| **Create Book** | `POST /api/books/` | `Books.jsx` | `http://localhost:3000/books` |
+| **Book Details** | `GET /api/books/<id>/` | `Books.jsx` | `http://localhost:3000/books` |
+| **Issue Book** | `POST /api/books/issue/` | `IssueReturnModal.jsx` | *(Modal on Books Page)* |
+| **Return Book** | `POST /api/books/return/<id>/` | `IssueReturnModal.jsx` | *(Modal on Books Page)* |
+| **AI Recommender** | `GET /api/books/recommend/<id>/` | `Books.jsx` | `http://localhost:3000/books` |
+| **Overdue Rpt** | `GET /api/reports/overdue/` | `Books.jsx` | `http://localhost:3000/books` |
 
-#### 8. List/Create Books
-- **URL**: `/api/books/`
-- **Methods**: `GET`, `POST`
-- **Authentication**: Required
-- **Query Parameters** (for GET):
-  - `search`: Search in title, author, ISBN
-  - `ordering`: Order by field (e.g., `title`, `-title`)
-  - `page`: Page number (pagination)
-- **GET Response**: `200 OK`
-```json
-{
-  "count": 10,
-  "next": "http://127.0.0.1:8000/api/books/?page=2",
-  "previous": null,
-  "results": [
-    {
-      "id": 1,
-      "title": "Dune",
-      "author": "Frank Herbert",
-      "isbn": "9780441013593",
-      "category": 1,
-      "total_copies": 5,
-      "available_copies": 3,
-      "created_at": "2024-01-01T00:00:00Z",
-      "updated_at": "2024-01-01T00:00:00Z"
-    }
-  ]
-}
-```
-- **POST Request Body**:
-```json
-{
-  "title": "The Great Gatsby",
-  "author": "F. Scott Fitzgerald",
-  "isbn": "9780743273565",
-  "category": 1,
-  "total_copies": 10,
-  "available_copies": 10
-}
-```
+### 📂 Categories
 
-#### 9. Retrieve/Update/Delete Book
-- **URL**: `/api/books/<id>/`
-- **Methods**: `GET`, `PUT`, `PATCH`, `DELETE`
-- **Authentication**: Required
-- **GET Response**: `200 OK` (Book object)
-- **PUT/PATCH Response**: `200 OK` (Updated book object)
-- **DELETE Response**: `204 No Content`
+| Action | API Endpoint | Frontend Component | Frontend URL |
+| --- | --- | --- | --- |
+| **List Cats** | `GET /api/categories/` | `Categories.jsx` | `http://localhost:3000/categories` |
+| **Manage Cats** | `POST/PUT /api/categories/<id>/` | `Categories.jsx` | `http://localhost:3000/categories` |
 
-### Category Endpoints
+### 👥 Members & Management
 
-#### 10. List/Create Categories
-- **URL**: `/api/categories/`
-- **Methods**: `GET`, `POST`
-- **Authentication**: Required
-- **POST Request Body**:
-```json
-{
-  "name": "Mystery"
-}
-```
+| Action | API Endpoint | Frontend Component | Frontend URL |
+| --- | --- | --- | --- |
+| **List Members** | `GET /api/members/` | `Members.jsx` | `http://localhost:3000/members` |
+| **Req. Role** | `POST /api/management/request/` | `Members.jsx` | `http://localhost:3000/members` |
+| **Approve Role** | `POST /api/management/approve/` | `Members.jsx` | `http://localhost:3000/members` |
 
-#### 11. Retrieve/Update/Delete Category
-- **URL**: `/api/categories/<id>/`
-- **Methods**: `GET`, `PUT`, `PATCH`, `DELETE`
-- **Authentication**: Required
+---
 
-### Member Endpoints
-
-#### 12. List/Create Members
-- **URL**: `/api/members/`
-- **Methods**: `GET`, `POST`
-- **Authentication**: Required
-- **POST Request Body**:
-```json
-{
-  "name": "Jane Doe",
-  "membership_id": "MEM-000001",
-  "email": "jane@example.com",
-  "is_active": true
-}
-```
-
-#### 13. Retrieve/Update/Delete Member
-- **URL**: `/api/members/<id>/`
-- **Methods**: `GET`, `PUT`, `PATCH`, `DELETE`
-- **Authentication**: Required
-
-### Book Issue/Return Endpoints
-
-#### 14. Issue Book
-- **URL**: `/api/books/issue/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Request Body**:
-```json
-{
-  "book_id": 1,
-  "member_id": 1
-}
-```
-- **Response**: `201 Created`
-```json
-{
-  "id": 1,
-  "book": 1,
-  "member": 1,
-  "issue_date": "2024-01-15",
-  "due_date": "2024-01-29",
-  "return_date": null,
-  "fine_amount": "0.00"
-}
-```
-
-#### 15. Return Book
-- **URL**: `/api/books/return/<issue_id>/`
-- **Method**: `POST`
-- **Authentication**: Required
-- **Response**: `200 OK`
-```json
-{
-  "id": 1,
-  "book": 1,
-  "member": 1,
-  "issue_date": "2024-01-15",
-  "due_date": "2024-01-29",
-  "return_date": "2024-01-30",
-  "fine_amount": "5.00"
-}
-```
-
-### Report Endpoints
-
-#### 16. Overdue Books Report
-- **URL**: `/api/reports/overdue/`
-- **Method**: `GET`
-- **Authentication**: Required
-- **Response**: `200 OK`
-```json
-[
-  {
-    "id": 1,
-    "book": 1,
-    "member": 1,
-    "issue_date": "2024-01-01",
-    "due_date": "2024-01-15",
-    "return_date": null,
-    "fine_amount": "0.00"
-  }
-]
-```
-**Note**: This endpoint also sends email notifications to members with overdue books.
-
-### AI Recommendation Endpoints
-
-#### 17. Book Recommendations
-- **URL**: `/api/books/recommend/<member_id>/`
-- **Method**: `GET`
-- **Authentication**: Required
-- **Response**: `200 OK`
-```json
-[
-  {
-    "id": 5,
-    "title": "Foundation",
-    "author": "Isaac Asimov",
-    "isbn": "9780553293357",
-    "category": 1,
-    "total_copies": 3,
-    "available_copies": 2
-  }
-]
-```
-**Note**: Recommendations are based on the member's previous book issues using AI embeddings.
-
-## User Roles & Permissions
-
-### Roles
-
-1. **MEMBER**: Default role for new users
-   - Can view books, categories, members
-   - Can request management roles
-   - Can view their own book issues
-
-2. **LIBRARIAN**: Can manage library operations
-   - All member permissions
-   - Can issue/return books
-   - Can view reports
-   - Can manage books, categories, members
-
-3. **ADMIN**: Full system access
-   - All librarian permissions
-   - Can approve/reject management requests
-   - Can manage all users
-
-### Permission Classes
-
-- `IsAuthenticated`: Required for most endpoints
-- `IsAdmin`: Admin-only endpoints
-- `IsManagement`: Admin or Librarian only
-
-## API Features
+## ℹ️ Additional Implementation Details
 
 ### Pagination
-All list endpoints support pagination with 10 items per page by default.
+
+* **Backend**: Implemented using `PageNumberPagination` in `apps/core/pagination.py`.
+* **Frontend**: Fully handled in `Books.jsx`, `Categories.jsx`, and `Members.jsx`.
+* **Default**: 10 items per page.
+* **Usage**: `?page=2` appended to API calls.
 
 ### Search & Filtering
-- **Search**: Available on books endpoint (`?search=keyword`)
-- **Ordering**: Available on all list endpoints (`?ordering=field_name` or `?ordering=-field_name`)
 
-### Example Queries
+* Supported on List endpoints.
+* **Query Param**: `?search=keyword` (e.g., Book Title, ISBN, Member Name).
+* **Ordering**: `?ordering=field` (e.g., `?ordering=-created_at`).
 
-```bash
-# Search books
-GET /api/books/?search=dune
+### User Roles
 
-# Order books by title
-GET /api/books/?ordering=title
+1. **MEMBER**: View books, view own history, request upgrades.
+2. **LIBRARIAN**: Issue/Return books, Manage inventory.
+3. **ADMIN**: Manage Users, Approve Roles, Full Access.
 
-# Get second page
-GET /api/books/?page=2
-```
+---
 
-## Database Models
+## 📄 License
 
-### User
-- Custom user model with email as username
-- Roles: ADMIN, LIBRARIAN, MEMBER
-- MemberProfile: Auto-generated member ID (MEM-000001)
+MIT License.
 
-### Book
-- Title, author, ISBN
-- Category (ForeignKey)
-- Total and available copies
-- Embedding (for AI recommendations)
-
-### BookIssue
-- Book and member references
-- Issue date, due date, return date
-- Fine amount calculation
-
-### ManagementRequest
-- User requests for Admin/Librarian roles
-- Status: PENDING, APPROVED, REJECTED
-
-## Development
-
-### Running Tests
-
-```bash
-python manage.py test
-```
-
-### Creating Migrations
-
-```bash
-python manage.py makemigrations
-```
-
-### Applying Migrations
-
-```bash
-python manage.py migrate
-```
-
-### Django Admin
-
-Access the admin panel at `http://127.0.0.1:8000/admin/` using your superuser credentials.
-
-## Production Deployment
-
-Before deploying to production:
-
-1. Set `DEBUG = False` in `settings.py`
-2. Generate a new `SECRET_KEY`
-3. Update `ALLOWED_HOSTS` with your domain
-4. Configure proper database credentials
-5. Set up static file serving
-6. Configure HTTPS
-7. Set up proper email backend
-8. Use environment variables for all sensitive data
-
-## Troubleshooting
-
-### Database Connection Issues
-- Ensure PostgreSQL is running
-- Verify database credentials in `.env`
-- Check database exists: `psql -U postgres -l`
-
-### Email Not Sending
-- Verify Gmail App Password is correct
-- Check email settings in `.env`
-- Ensure `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` are set
-
-### Import Errors
-- Ensure virtual environment is activated
-- Run `pip install -r requirements.txt`
-- Check Python version (3.12+)
-
-## License
-
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-[Your Contributing Guidelines Here]
-
-## Support
-
-For issues and questions, please open an issue in the repository.
