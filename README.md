@@ -35,7 +35,7 @@ A comprehensive Django REST Framework-based Library Management System with AI-po
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/sayout-de003/AI-Assisted-Library-Management-System>
 cd websoft
 ```
 
@@ -553,9 +553,8 @@ Before deploying to production:
 
 ## License
 
-[Your License Here]
 
-## Contributing
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 [Your Contributing Guidelines Here]
 
