@@ -12,6 +12,9 @@ A comprehensive Django REST Framework-based Library Management System with AI-po
 - **Book Issuance**: Automated book issue and return with fine calculation.
 - **AI Recommendations**: ML-powered book recommendations using Sentence Transformers based on member reading history.
 - **Overdue Management**: Automated overdue tracking and email notifications.
+- **Automated Emails**: Welcome emails sent upon member signup and overdue reminders for unreturned books.
+- **Fine Calculation**: Automatic fine assessment at $5 per overdue day upon book return.
+- **Member ID Generation**: Unique membership IDs generated as "MEM" followed by a zero-padded user ID (e.g., MEM0001).
 - **Management Requests**: Members can request Admin/Librarian roles.
 - **JWT Authentication**: Secure token-based authentication with refresh capability.
 - **RESTful API**: Complete REST API with pagination, search, and filtering.

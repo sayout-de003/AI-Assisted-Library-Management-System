@@ -11,6 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from apps.users.models import ManagementRequest, User
 from apps.users.services import approve_management_request,reject_management_request
 from apps.users.permissions import IsAdmin
+from apps.library.models import Member
+from apps.library.services import send_welcome_email
 from .serializers import SignupSerializer
 
 
@@ -20,7 +22,15 @@ class SignupAPI(APIView):
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        user = serializer.save()
+        # Create Member instance
+        member = Member.objects.create(
+            name=user.name,
+            email=user.email,
+            membership_id=f"MEM{user.id:04d}"  # Generate membership ID
+        )
+        # Send welcome email
+        send_welcome_email(member)
         return Response({"message": "Signup successful"}, status=status.HTTP_201_CREATED)
 
 

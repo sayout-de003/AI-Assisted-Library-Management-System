@@ -12,10 +12,13 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+from django.conf import settings
+from django.db import models
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
@@ -26,3 +29,4 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+

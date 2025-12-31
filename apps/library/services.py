@@ -50,6 +50,16 @@ def send_overdue_email(issue):
     )
 
 
+def send_welcome_email(member):
+    send_mail(
+        subject="Welcome to the Library",
+        message=f"Welcome {member.name}! Thank you for joining our library.",
+        from_email=None,
+        recipient_list=[member.email],
+        fail_silently=True,
+    )
+
+
 # library_lms/apps/library/services.py
 
 from sentence_transformers import SentenceTransformer
