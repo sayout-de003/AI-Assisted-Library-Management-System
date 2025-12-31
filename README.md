@@ -127,7 +127,7 @@ library-frontend/
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/sayout-de003/AI-Assisted-Library-Management-System](https://github.com/sayout-de003/AI-Assisted-Library-Management-System)
+git clone (https://github.com/sayout-de003/AI-Assisted-Library-Management-System)
 cd websoft
 
 ```
